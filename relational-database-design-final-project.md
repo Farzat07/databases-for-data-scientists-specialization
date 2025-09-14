@@ -238,3 +238,39 @@ VideoID(fk))
   - It is in 1NF as it is a relation (only one value per cell).
   - It is in 2NF as there are no partial functional dependencies.
   - It is in 3NF as there are no transitive functional dependencies.
+
+## The final output of the implementation
+
+- Users(++UUID++, FirstName, LastName, DoB, Email, Password, CreatedAt, Gender, Country)
+  - FD1: UUID → FirstName, LastName, DoB, Email, Password, CreatedAt, Gender, Country
+- Channels(++UUID++, Name, Description, CreatedAt, UserID(fk))
+  - FD1: UUID → Name, Description, CreatedAt, UserID
+- Channel_subscriptions(++UserID++(fk), ++ChannelID++(fk))
+  - There is no non-primary-key attribute.
+- Channel_featured(++FeaturingChannelID++(fk), ++FeaturedChannelID++(fk))
+  - There is no non-primary-key attribute.
+- Playlists(++UUID++, Name, Description, CreatedAt, ChannelID(fk))
+  - FD1: UUID → Name, Description, CreatedAt, ChannelID
+- Playlist_subscriptions(++UserID++(fk), ++PlaylistID++(fk))
+  - There is no non-primary-key attribute.
+- Videos(++UUID++, Title, Duration, Views, Description, Category, CreatedAt, ChannelID(fk))
+  - FD1: UUID → Title, Duration, Views, Description, Category, CreatedAt, ChannelID
+- Video_likes(++UserID++(fk), ++VideoID++(fk))
+  - There is no non-primary-key attribute.
+- WatchHist(++UserID++(fk), ++VideoID++(fk), WatchedAt, WatchedUntil)
+  - FD1: UserID, VideoID → WatchedAt, WatchedUntil
+- PlaylistPos(++PlaylistID++(fk), ++Position++, VideoID(fk))
+  - FD1: PlaylistID, Position → VideoID
+- Comments(++ChannelID++(fk), ++CreatedAt++, Text, ReplyToChannelID(fk), ReplyToCreatedAt(fk),
+VideoID(fk))
+  - FD1: ChannelID, CreatedAt → Text, ReplyToChannelID, ReplyToCreatedAt, VideoID
+
+The data types and domains are mostly obvious, but here are some notes about the
+possibly tricky ones:
+
+- UUIDs are 128 bit values by definition (possibly numbers, depends on implementation).
+- Passwords are stored as salted hashes.
+- Timestamps, such as CreatedAt and WatchedAt need to be 64-bit integers to prevent
+the [Year 2038 problem](https://en.wikipedia.org/wiki/Year_2038_problem).
+- Video durations (Duration) and positions (WatchedUntil) are stored in seconds
+as integers.
