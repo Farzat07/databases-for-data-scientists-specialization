@@ -146,3 +146,18 @@ in one or more watch history items.
 ## Entity Relationship Diagram
 
 ![Entity Relationship Diagram](Final1_ERD.svg)
+
+## Relational Model
+
+- Users(++UUID++, FirstName, LastName, DoB, Email, Password, CreatedAt, Gender, Country)
+- Channels(++UUID++, Name, Description, CreatedAt, UserID(fk))
+- Channel_subscriptions(++UserID++(fk), ++ChannelID++(fk))
+- Channel_featured(++FeaturingChannelID++(fk), ++FeaturedChannelID++(fk))
+- Playlists(++UUID++, Name, Description, CreatedAt, ChannelID(fk))
+- Playlist_subscriptions(++UserID++(fk), ++PlaylistID++(fk))
+- Videos(++UUID++, Title, Duration, Views, Description, Category, CreatedAt, ChannelID(fk))
+- Video_likes(++UserID++(fk), ++VideoID++(fk))
+- WatchHist(++UserID++(fk), ++VideoID++(fk), WatchedAt, WatchedUntil)
+- PlaylistPos(++PlaylistID++(fk), ++Position++, VideoID(fk))
+- Comments(++ChannelID++(fk), ++CreatedAt++, Text, ReplyToChannelID(fk), ReplyToCreatedAt(fk),
+VideoID(fk))
