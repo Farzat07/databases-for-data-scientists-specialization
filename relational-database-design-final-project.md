@@ -14,16 +14,22 @@ of foreign interests.
 ### Structure
 
 The information to be recorded is similar to that of YouTube. Entities include Users,
-Channels, Playlists, Videos, and Comments.
+Channels, Playlists, and Videos. Other entities which describe relations between
+the entities with some extra details are comments, watch histories, and playlist
+positions.
 
 For users, it might be tempting to use emails or usernames as identities, but both
 are susceptible to change, which could cause headaches as foreign keys would need
 to be replaced too. Instead, [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)s
 will be used. The same goes for channels, playlists, and videos. For all of these,
-UUIDs make sense as they could be used in the URLs as well. As for comments, UUIDs
-are not needed, as a combination of commenter's ID and [Unix timestamp](https://www.unixtimestamp.com/)
-is sufficient (both are fixed, and limiting each commenter to 1 comment per second
-is reasonable).
+UUIDs make sense as they could be used in the URLs as well.
+
+As for the other entities, it would make more sense to have the primary key be that
+of the original entity plus some identifying factor. For comments, a combination
+of commenter's ID and [Unix timestamp](https://www.unixtimestamp.com/) is sufficient
+(both are fixed, and limiting each commenter to 1 comment per second is reasonable).
+For watch histories, the UserID and VideoID can be combined to form the primary key.
+For playlist positions, a combination of PlaylistID and position# would also be sufficient.
 
 There are many possible relations between the entities. For example, each user must
 have one or more channels, while channels must belong to and only one user. The ER
@@ -73,12 +79,21 @@ only one channel.
     - Degree is binary.
     - Cardinality is N:1.
     - Left side is optional, right side is mandatory.
-1. A playlist MAY contain one or more videos. A video MAY be in one or more playlists.
-    - Playlists are lists of related videos intended to played in succession. A video
-    does not need to be in any particular playlist.
+1. A playlist MAY contain one or more playlist positions. A playlist position MUST
+be in one and only one playlist.
+    - Playlists are lists of related videos intended to played in succession. Playlist
+    positions represent where each video is placed in the playlist. Empty playlists
+    are allowed.
     - Degree is binary.
     - Cardinality is N:1.
-    - Both sides are optional.
+    - Left side is optional, right side is mandatory.
+1. A playlist position MUST belong to one and only one video. A video MAY have one
+or more playlist positions.
+    - A video can appear in multiple playlists, and even in multiple positions in
+    the same playlist.
+    - Degree is binary.
+    - Cardinality is 1:N.
+    - Left side is mandatory, right side is optional.
 1. A user MAY subscribe to one or more playlists. A playlist MAY be subscribed to
 by one or more users.
     - A user can subscribe to playlists as well, such that new videos added to the
@@ -106,16 +121,24 @@ or more replies.
     - Degree is unary.
     - Cardinality is 1:N.
     - Both sides are optional.
-1. A user MAY watch one or more videos. A video MAY be watched by one or more users.
-    - A user can watch videos, and these should be recorded for the user in case
-    they wanted to re-watch them. Videos have their watch-count as a separate attribute.
+1. A watch history item MUST belong to one and only one user. A user MAY have multiple
+watch history items.
+    - A watch history item represents a record of a user watching a video. Only
+    the most recent one is kept. Watch history of a user could be empty if they
+    wished to delete history.
     - Degree is binary.
-    - Cardinality is N:N.
-    - Both sides are optional.
-1. A user MAY like/dislike one or more videos. A video MAY be liked/disliked by
-one or more users.
-    - A user can like/dislike videos, and these should be recorded as users might
-    want to remove the like/dislike or change it.
+    - Cardinality is 1:N.
+    - Left side is mandatory, right side is optional.
+1. A watch history item MUST refer to one and only one video. A video MAY be referenced
+in one or more watch history items.
+    - A watch history item records which video was watched. A video might not be
+    recorded in any history item if all users chose to delete their histories.
+    - Degree is binary.
+    - Cardinality is 1:N.
+    - Left side is mandatory, right side is optional.
+1. A user MAY like one or more videos. A video MAY be liked by one or more users.
+    - A user can like videos, and these should be recorded as users might want to
+    remove the like or change it.
     - Degree is binary.
     - Cardinality is N:N.
     - Both sides are optional.
