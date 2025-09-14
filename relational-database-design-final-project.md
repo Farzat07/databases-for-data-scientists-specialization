@@ -161,3 +161,80 @@ in one or more watch history items.
 - PlaylistPos(++PlaylistID++(fk), ++Position++, VideoID(fk))
 - Comments(++ChannelID++(fk), ++CreatedAt++, Text, ReplyToChannelID(fk), ReplyToCreatedAt(fk),
 VideoID(fk))
+
+## Normalize the Relational Model to 3NF
+
+First, the Functional Dependencies need to be determined in order to eliminate partial
+functional dependencies and transitive functional dependencies:
+
+- Users(++UUID++, FirstName, LastName, DoB, Email, Password, CreatedAt, Gender, Country)
+  - FD1: UUID → FirstName, LastName, DoB, Email, Password, CreatedAt, Gender, Country
+- Channels(++UUID++, Name, Description, CreatedAt, UserID(fk))
+  - FD1: UUID → Name, Description, CreatedAt, UserID
+- Channel_subscriptions(++UserID++(fk), ++ChannelID++(fk))
+  - There is no non-primary-key attribute.
+- Channel_featured(++FeaturingChannelID++(fk), ++FeaturedChannelID++(fk))
+  - There is no non-primary-key attribute.
+- Playlists(++UUID++, Name, Description, CreatedAt, ChannelID(fk))
+  - FD1: UUID → Name, Description, CreatedAt, ChannelID
+- Playlist_subscriptions(++UserID++(fk), ++PlaylistID++(fk))
+  - There is no non-primary-key attribute.
+- Videos(++UUID++, Title, Duration, Views, Description, Category, CreatedAt, ChannelID(fk))
+  - FD1: UUID → Title, Duration, Views, Description, Category, CreatedAt, ChannelID
+- Video_likes(++UserID++(fk), ++VideoID++(fk))
+  - There is no non-primary-key attribute.
+- WatchHist(++UserID++(fk), ++VideoID++(fk), WatchedAt, WatchedUntil)
+  - FD1: UserID, VideoID → WatchedAt, WatchedUntil
+- PlaylistPos(++PlaylistID++(fk), ++Position++, VideoID(fk))
+  - FD1: PlaylistID, Position → VideoID
+- Comments(++ChannelID++(fk), ++CreatedAt++, Text, ReplyToChannelID(fk), ReplyToCreatedAt(fk),
+VideoID(fk))
+  - FD1: ChannelID, CreatedAt → Text, ReplyToChannelID, ReplyToCreatedAt, VideoID
+
+Next is the normalized relations with the explanation of why they are in 3NF:
+
+- Users(++UUID++, FirstName, LastName, DoB, Email, Password, CreatedAt, Gender, Country)
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Channels(++UUID++, Name, Description, CreatedAt, UserID(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Channel_subscriptions(++UserID++(fk), ++ChannelID++(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Channel_featured(++FeaturingChannelID++(fk), ++FeaturedChannelID++(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Playlists(++UUID++, Name, Description, CreatedAt, ChannelID(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Playlist_subscriptions(++UserID++(fk), ++PlaylistID++(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Videos(++UUID++, Title, Duration, Views, Description, Category, CreatedAt, ChannelID(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Video_likes(++UserID++(fk), ++VideoID++(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- WatchHist(++UserID++(fk), ++VideoID++(fk), WatchedAt, WatchedUntil)
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- PlaylistPos(++PlaylistID++(fk), ++Position++, VideoID(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
+- Comments(++ChannelID++(fk), ++CreatedAt++, Text, ReplyToChannelID(fk), ReplyToCreatedAt(fk),
+VideoID(fk))
+  - It is in 1NF as it is a relation (only one value per cell).
+  - It is in 2NF as there are no partial functional dependencies.
+  - It is in 3NF as there are no transitive functional dependencies.
