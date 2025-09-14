@@ -142,3 +142,7 @@ in one or more watch history items.
     - Degree is binary.
     - Cardinality is N:N.
     - Both sides are optional.
+
+## Entity Relationship Diagram
+
+![Entity Relationship Diagram](Final1_ERD.svg)
