@@ -6,6 +6,11 @@ The effect of social media companies on the moral and political landscape in
 our nations is getting stronger day-by-day. A very recent example can be seen in
 Nepal, where [the new leader was elected via Discord](https://www.thestreet.com/crypto/policy/nepals-gen-z-picks-new-leader-on-discord-crypto-community-in-shock).
 
+Even in general, the possible and dangerous effect of social medias on the opinions
+is real and frightening. Watch [We're building a dystopia just to make people click
+on ads](https://www.ted.com/talks/zeynep_tufekci_we_re_building_a_dystopia_just_to_make_people_click_on_ads),
+taken from [Computing, Ethics, and Society Foundations](https://www.coursera.org/learn/computing-ethics-and-society-foundations/).
+
 In this example, a company within the hypothetical country of Y wants to start an
 alternative to YouTube. This alternative is intended to serve the same function
 while keeping the control of the platform in sovereign hands outside the reach
