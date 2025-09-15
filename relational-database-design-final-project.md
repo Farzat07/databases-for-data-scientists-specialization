@@ -66,8 +66,8 @@ by one or more users.
     - Degree is binary.
     - Cardinality is N:N.
     - Both sides are optional.
-1. A channel MAY feature to one or more channels. A channel MAY be featured by one
-or more channels.
+1. A channel MAY feature one or more channels. A channel MAY be featured by one or
+more channels.
     - A channel can feature other channels with similar features on its homepage.
     - Degree is unary.
     - Cardinality is N:N.
